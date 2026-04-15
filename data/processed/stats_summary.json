@@ -1,0 +1,232 @@
+{
+  "total_tickets": 200000,
+  "date_range": {
+    "start": "2022-01-01",
+    "end": "2024-12-31"
+  },
+  "columns": [
+    "ticket_id",
+    "customer_name",
+    "customer_email",
+    "product",
+    "category",
+    "issue_description",
+    "resolution_notes",
+    "priority",
+    "status",
+    "channel",
+    "region",
+    "customer_age",
+    "customer_gender",
+    "subscription_type",
+    "customer_tenure_months",
+    "previous_tickets",
+    "customer_satisfaction_score",
+    "first_response_time_hours",
+    "resolution_time_hours",
+    "ticket_created_date",
+    "ticket_resolved_date",
+    "escalated",
+    "sla_breached",
+    "operating_system",
+    "browser",
+    "payment_method",
+    "language",
+    "preferred_contact_time",
+    "issue_complexity_score",
+    "customer_segment",
+    "resolution_time_days",
+    "month",
+    "year_month",
+    "weekday",
+    "complexity_quintile"
+  ],
+  "missing_values": {
+    "browser": 40023
+  },
+  "tickets_by_status": {
+    "In Progress": 40065,
+    "Closed": 40029,
+    "Pending Customer": 40014,
+    "Resolved": 39970,
+    "Open": 39922
+  },
+  "tickets_by_priority": {
+    "High": 50241,
+    "Urgent": 50143,
+    "Medium": 49854,
+    "Low": 49762
+  },
+  "tickets_by_category": {
+    "Feature Request": 20169,
+    "Subscription Cancellation": 20096,
+    "Performance Issue": 20074,
+    "Security Concern": 20040,
+    "Login Issue": 20002,
+    "Payment Problem": 19997,
+    "Bug Report": 19981,
+    "Refund Request": 19900,
+    "Data Sync Issue": 19877,
+    "Account Suspension": 19864
+  },
+  "tickets_by_product": {
+    "Billing System": 20111,
+    "CRM Platform": 20097,
+    "E-commerce Store": 20095,
+    "Cloud Storage": 20056,
+    "Mobile App": 20043,
+    "Analytics Dashboard": 19974,
+    "Web Portal": 19954,
+    "Payment Gateway": 19952,
+    "Subscription Service": 19883,
+    "API Service": 19835
+  },
+  "tickets_by_channel": {
+    "Web Form": 40090,
+    "Chat": 40073,
+    "Phone": 40073,
+    "Social Media": 40038,
+    "Email": 39726
+  },
+  "tickets_by_region": {
+    "Africa": 33576,
+    "Asia": 33554,
+    "South America": 33369,
+    "Europe": 33277,
+    "North America": 33177,
+    "Australia": 33047
+  },
+  "tickets_by_language": {
+    "Japanese": 33620,
+    "English": 33553,
+    "French": 33264,
+    "German": 33212,
+    "Spanish": 33184,
+    "Chinese": 33167
+  },
+  "tickets_by_subscription": {
+    "Free": 50147,
+    "Basic": 50069,
+    "Premium": 50052,
+    "Enterprise": 49732
+  },
+  "tickets_by_segment": {
+    "Individual": 67098,
+    "Corporate": 66751,
+    "Small Business": 66151
+  },
+  "escalation_rate_pct": 50.21,
+  "sla_breach_rate_pct": 50.02,
+  "csat": {
+    "mean": 3.0,
+    "median": 3.0,
+    "std": 1.41,
+    "by_priority": {
+      "High": 3.0,
+      "Low": 3.01,
+      "Medium": 3.0,
+      "Urgent": 3.0
+    },
+    "by_channel": {
+      "Chat": 3.0,
+      "Email": 3.01,
+      "Phone": 3.0,
+      "Social Media": 3.0,
+      "Web Form": 2.99
+    }
+  },
+  "resolution_time_hours": {
+    "mean": 120.54,
+    "median": 120.45,
+    "p75": 180.26,
+    "p95": 228.02,
+    "by_priority": {
+      "High": 120.3,
+      "Low": 121.11,
+      "Medium": 119.9,
+      "Urgent": 120.53
+    }
+  },
+  "first_response_time_hours": {
+    "mean": 36.31,
+    "median": 36.31,
+    "by_channel": {
+      "Chat": 36.34,
+      "Email": 35.99,
+      "Phone": 36.33,
+      "Social Media": 36.49,
+      "Web Form": 36.38
+    }
+  },
+  "issue_complexity_score": {
+    "mean": 5.5,
+    "median": 6.0,
+    "by_category": {
+      "Account Suspension": 5.51,
+      "Bug Report": 5.48,
+      "Data Sync Issue": 5.51,
+      "Feature Request": 5.51,
+      "Login Issue": 5.51,
+      "Payment Problem": 5.51,
+      "Performance Issue": 5.51,
+      "Refund Request": 5.48,
+      "Security Concern": 5.47,
+      "Subscription Cancellation": 5.51
+    }
+  },
+  "customer_age": {
+    "mean": 46.5,
+    "min": 18,
+    "max": 75
+  },
+  "customer_tenure_months": {
+    "mean": 30.4,
+    "median": 30.0
+  },
+  "customer_gender": {
+    "Other": 66795,
+    "Male": 66606,
+    "Female": 66599
+  },
+  "operating_systems": {
+    "Android": 40141,
+    "iOS": 40063,
+    "Linux": 40020,
+    "MacOS": 39916,
+    "Windows": 39860
+  },
+  "saved_plots": {
+    "missing_values": "data\\processed\\01_missing_values.png",
+    "dtypes": "data\\processed\\01b_dtypes.png",
+    "dist_category": "data\\processed\\02_00_dist_category.png",
+    "dist_priority": "data\\processed\\02_01_dist_priority.png",
+    "dist_status": "data\\processed\\02_02_dist_status.png",
+    "dist_channel": "data\\processed\\02_03_dist_channel.png",
+    "dist_product": "data\\processed\\02_04_dist_product.png",
+    "dist_region": "data\\processed\\02_05_dist_region.png",
+    "dist_subscription_type": "data\\processed\\02_06_dist_subscription_type.png",
+    "dist_customer_segment": "data\\processed\\02_07_dist_customer_segment.png",
+    "dist_language": "data\\processed\\02_08_dist_language.png",
+    "dist_operating_system": "data\\processed\\02_09_dist_operating_system.png",
+    "tickets_per_month": "data\\processed\\03a_tickets_per_month.png",
+    "tickets_per_weekday": "data\\processed\\03b_tickets_per_weekday.png",
+    "escalation_timeline": "data\\processed\\03c_escalation_timeline.png",
+    "escalation_sla_pie": "data\\processed\\04a_escalation_sla_pie.png",
+    "resolution_time_by_priority": "data\\processed\\04b_resolution_time_by_priority.png",
+    "first_response_by_channel": "data\\processed\\04c_first_response_by_channel.png",
+    "sla_by_category": "data\\processed\\04d_sla_by_category.png",
+    "csat_distribution": "data\\processed\\05a_csat_distribution.png",
+    "csat_by_priority": "data\\processed\\05b_csat_by_priority.png",
+    "csat_by_channel": "data\\processed\\05c_csat_by_channel.png",
+    "csat_vs_escalation": "data\\processed\\05d_csat_vs_escalation.png",
+    "customer_age": "data\\processed\\06a_customer_age.png",
+    "gender_distribution": "data\\processed\\06b_gender_distribution.png",
+    "csat_vs_tenure": "data\\processed\\06c_csat_vs_tenure.png",
+    "correlation_matrix": "data\\processed\\07a_correlation_matrix.png",
+    "complexity_by_category": "data\\processed\\07b_complexity_by_category.png",
+    "resolution_vs_complexity": "data\\processed\\07c_resolution_vs_complexity.png",
+    "wordcloud_issues": "data\\processed\\08a_wordcloud_issues.png",
+    "wordcloud_resolutions": "data\\processed\\08b_wordcloud_resolutions.png",
+    "heatmap_category_product": "data\\processed\\09_heatmap_category_product.png"
+  }
+}
