@@ -28,7 +28,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 VECTORSTORE_DIR = ROOT / "data" / "vectorstore_multilingual_test"
-EMBED_MODEL     = os.getenv("EMBED_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
+EMBED_MODEL     = os.getenv("EMBED_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 DEFAULT_MODEL   = os.getenv("LLM_MODEL",   "openai/gpt-4o-mini")
 TOP_K_DEFAULT   = int(os.getenv("TOP_K", "5"))
 

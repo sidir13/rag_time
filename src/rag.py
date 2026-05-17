@@ -34,7 +34,7 @@ load_dotenv()
 
 ROOT = Path(__file__).resolve().parents[1]
 VECTORSTORE_DIR = ROOT / "data" / "vectorstore"
-EMBED_MODEL = os.getenv("EMBED_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
+EMBED_MODEL = os.getenv("EMBED_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 LLM_MODEL = os.getenv("LLM_MODEL", "openai/gpt-4o")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
 TOP_K = int(os.getenv("TOP_K", "5"))
@@ -140,8 +140,8 @@ class RAGEngine:
         # Over-retrieve pour compenser le post-filtrage
         fetch_k = min(k * 5, self.index_count) if filters else min(k, self.index_count)
 
-        query_vec = self.model.encode(
-            [query], normalize_embeddings=True
+        query_vec = self.model.encode_query(
+            query, normalize_embeddings=True
         )
         D, I = self.index.search(
             np.array(query_vec, dtype=np.float32), fetch_k

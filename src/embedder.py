@@ -3,7 +3,7 @@
 Zero RAM pour les poids du modele -- tout passe par des appels HTTP.
 Modele par defaut : sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2
   - 384 dims, 50+ langues (EN, DE, FR, ES, ZH, ...)
-  - Plan gratuit HF : ~1 000 req/jour
+  - Plan gratuit HF disponible via provider="hf-inference"
 
 Env var requise : HF_API_KEY  (huggingface.co/settings/tokens)
 """
@@ -25,6 +25,7 @@ class HFApiEmbedder:
         "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2": 384,
         "sentence-transformers/all-MiniLM-L6-v2":                       384,
         "sentence-transformers/all-mpnet-base-v2":                      768,
+        "BAAI/bge-small-en-v1.5":                                       384,
         "BAAI/bge-m3":                                                  1024,
     }
 
@@ -41,7 +42,9 @@ class HFApiEmbedder:
                 "Ajoute-le dans .env ou dans les variables d env Render."
             )
 
-        self._client = InferenceClient(token=api_key)
+        # provider="hf-inference" route directement vers l'infra HF
+        # (evite le 404 sur inferenceProviderMapping pour les modeles sans tiers)
+        self._client = InferenceClient(token=api_key, provider="hf-inference")
         self.model_name = model
         self._dim = self._MODEL_DIMS.get(model, 384)
 
@@ -54,6 +57,19 @@ class HFApiEmbedder:
         normalize_embeddings: bool = True,
         show_progress_bar: bool = False,
         batch_size: int = 32,
+    ) -> np.ndarray:
+        """Encode une liste de textes (documents ou requetes)."""
+        return self._encode_raw(texts, normalize_embeddings, batch_size)
+
+    def encode_query(self, text: str, normalize_embeddings: bool = True) -> np.ndarray:
+        """Encode une seule requete. Retourne un tableau de shape (1, dim)."""
+        return self._encode_raw([text], normalize_embeddings, batch_size=1)
+
+    def _encode_raw(
+        self,
+        texts: List[str],
+        normalize_embeddings: bool,
+        batch_size: int,
     ) -> np.ndarray:
         all_vecs: List[np.ndarray] = []
         for i in range(0, len(texts), batch_size):

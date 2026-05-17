@@ -47,7 +47,7 @@ VECTORSTORE_DIR = ROOT / "data" / "vectorstore"
 
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "400"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "50"))
-EMBED_MODEL = os.getenv("EMBED_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
+EMBED_MODEL = os.getenv("EMBED_MODEL", "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2")
 
 PII_FIELDS = {"customer_name", "customer_email"}
 
