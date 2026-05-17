@@ -36,7 +36,7 @@ if hasattr(sys.stdout, "reconfigure"):
 import faiss
 import numpy as np
 import pandas as pd
-from sentence_transformers import SentenceTransformer
+from embedder import OpenAIEmbedder
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -47,7 +47,7 @@ VECTORSTORE_DIR = ROOT / "data" / "vectorstore"
 
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "400"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "50"))
-EMBED_MODEL = os.getenv("EMBED_MODEL", "nomic-ai/nomic-embed-text-v1.5")
+EMBED_MODEL = os.getenv("EMBED_MODEL", "text-embedding-3-small")
 
 PII_FIELDS = {"customer_name", "customer_email"}
 
@@ -105,7 +105,7 @@ class Ingestor:
 
     def __init__(
         self,
-        model: SentenceTransformer | None = None,
+        model: OpenAIEmbedder | None = None,
         index: faiss.Index | None = None,
         store: dict | None = None,
         embed_model: str = EMBED_MODEL,
@@ -124,11 +124,8 @@ class Ingestor:
         if model is not None:
             self.model = model
         else:
-            print(f"Chargement du modèle d'embedding : {embed_model}...")
-            self.model = SentenceTransformer(
-                embed_model,
-                trust_remote_code=True,
-            )
+            print(f"Initialisation de l'embedder OpenAI : {embed_model}...")
+            self.model = OpenAIEmbedder(embed_model)
             print(f"  → {self.model.get_sentence_embedding_dimension()} dimensions")
 
         self.dim = self.model.get_sentence_embedding_dimension()
@@ -241,12 +238,9 @@ class Ingestor:
             if not new_ids:
                 continue
 
-            # Préfixe nomic-embed requis pour les documents
-            prefixed_docs = [f"search_document: {d}" for d in new_docs]
-
-            # Embedding en batch, normalisation L2 pour IndexFlatIP = cosine
+            # Embedding en batch (OpenAI API), normalisation L2 implicite
             embeddings = self.model.encode(
-                prefixed_docs, show_progress_bar=False, normalize_embeddings=True
+                new_docs, show_progress_bar=False, normalize_embeddings=True
             )
 
             self.index.add(np.array(embeddings, dtype=np.float32))
@@ -319,9 +313,8 @@ class Ingestor:
             print(f"  {file_path.name} : tous les chunks déjà indexés")
             return 0
 
-        prefixed_docs = [f"search_document: {d}" for d in new_docs]
         embeddings = self.model.encode(
-            prefixed_docs, show_progress_bar=False, normalize_embeddings=True
+            new_docs, show_progress_bar=False, normalize_embeddings=True
         )
 
         self.index.add(np.array(embeddings, dtype=np.float32))

@@ -27,14 +27,14 @@ from pathlib import Path
 
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
+from embedder import OpenAIEmbedder
 from dotenv import load_dotenv
 
 load_dotenv()
 
 ROOT = Path(__file__).resolve().parents[1]
 VECTORSTORE_DIR = ROOT / "data" / "vectorstore"
-EMBED_MODEL = os.getenv("EMBED_MODEL", "nomic-ai/nomic-embed-text-v1.5")
+EMBED_MODEL = os.getenv("EMBED_MODEL", "text-embedding-3-small")
 LLM_MODEL = os.getenv("LLM_MODEL", "openai/gpt-4o")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
 TOP_K = int(os.getenv("TOP_K", "5"))
@@ -57,7 +57,7 @@ class RAGEngine:
 
     def __init__(
         self,
-        model: SentenceTransformer | None = None,
+        model: OpenAIEmbedder | None = None,
         index: faiss.Index | None = None,
         store: dict | None = None,
         embed_model: str = EMBED_MODEL,
@@ -73,10 +73,7 @@ class RAGEngine:
         if model is not None:
             self.model = model
         else:
-            self.model = SentenceTransformer(
-                embed_model,
-                trust_remote_code=True,
-            )
+            self.model = OpenAIEmbedder(embed_model)
 
         # FAISS index + metadata store (partagé avec Ingestor ou chargé du disque)
         if index is not None and store is not None:
@@ -144,7 +141,7 @@ class RAGEngine:
         fetch_k = min(k * 5, self.index_count) if filters else min(k, self.index_count)
 
         query_vec = self.model.encode(
-            [f"search_query: {query}"], normalize_embeddings=True
+            [query], normalize_embeddings=True
         )
         D, I = self.index.search(
             np.array(query_vec, dtype=np.float32), fetch_k

@@ -28,7 +28,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 VECTORSTORE_DIR = ROOT / "data" / "vectorstore_multilingual_test"
-EMBED_MODEL     = os.getenv("EMBED_MODEL", "nomic-ai/nomic-embed-text-v1.5")
+EMBED_MODEL     = os.getenv("EMBED_MODEL", "text-embedding-3-small")
 DEFAULT_MODEL   = os.getenv("LLM_MODEL",   "openai/gpt-4o-mini")
 TOP_K_DEFAULT   = int(os.getenv("TOP_K", "5"))
 
