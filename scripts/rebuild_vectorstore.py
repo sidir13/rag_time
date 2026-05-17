@@ -1,4 +1,4 @@
-"""Rebuild FAISS vectorstore using OpenAI text-embedding-3-small.
+"""Rebuild FAISS vectorstore using a local SentenceTransformer model.
 
 Re-embeds every document already stored in the existing store.pkl
 (no need to re-parse the original CSV) and writes a fresh index.faiss.
@@ -7,16 +7,14 @@ Usage:
     python scripts/rebuild_vectorstore.py [--src PATH] [--dst PATH] [--model MODEL]
 
 Defaults:
-    --src  data/vectorstore_multilingual_test   (existing nomic store)
-    --dst  data/vectorstore_multilingual_test   (overwrite in-place)
-    --model text-embedding-3-small
+    --src   data/vectorstore_multilingual_test   (existing store)
+    --dst   data/vectorstore_multilingual_test   (overwrite in-place)
+    --model paraphrase-multilingual-MiniLM-L12-v2
 
-Environment:
-    OPENAI_API_KEY  (required)
+No API key required — model is downloaded once and cached locally.
 """
 
 import argparse
-import os
 import pickle
 import sys
 from pathlib import Path
@@ -31,7 +29,7 @@ import faiss
 import numpy as np
 from tqdm import tqdm
 
-from embedder import OpenAIEmbedder
+from embedder import LocalEmbedder
 
 
 def rebuild(src_dir: Path, dst_dir: Path, model_name: str, batch_size: int) -> None:
@@ -49,7 +47,7 @@ def rebuild(src_dir: Path, dst_dir: Path, model_name: str, batch_size: int) -> N
     print(f"  {total:,} documents to re-embed")
 
     # ── 2. Init embedder ─────────────────────────────────────────────────────
-    embedder = OpenAIEmbedder(model_name)
+    embedder = LocalEmbedder(model_name)
     dim = embedder.get_sentence_embedding_dimension()
     print(f"  Model : {model_name}  |  dim : {dim}")
 
@@ -88,12 +86,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Rebuild FAISS vectorstore with OpenAI embeddings")
     parser.add_argument("--src",   default=default_vs, help="Source vectorstore directory")
     parser.add_argument("--dst",   default=default_vs, help="Destination directory (default: overwrite src)")
-    parser.add_argument("--model", default="text-embedding-3-small", help="OpenAI embedding model")
+    parser.add_argument("--model", default="paraphrase-multilingual-MiniLM-L12-v2", help="SentenceTransformer model")
     parser.add_argument("--batch-size", type=int, default=512, help="API batch size (≤ 2048)")
     args = parser.parse_args()
-
-    if not os.environ.get("OPENAI_API_KEY"):
-        sys.exit("ERROR: OPENAI_API_KEY is not set.")
 
     rebuild(
         src_dir    = Path(args.src),

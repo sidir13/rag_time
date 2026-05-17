@@ -34,7 +34,7 @@ load_dotenv()
 
 ROOT = Path(__file__).resolve().parents[1]
 VECTORSTORE_DIR = ROOT / "data" / "vectorstore"
-EMBED_MODEL = os.getenv("EMBED_MODEL", "text-embedding-3-small")
+EMBED_MODEL = os.getenv("EMBED_MODEL", "paraphrase-multilingual-MiniLM-L12-v2")
 LLM_MODEL = os.getenv("LLM_MODEL", "openai/gpt-4o")
 OPENROUTER_API_KEY = os.getenv("OPENROUTER_API_KEY", "")
 TOP_K = int(os.getenv("TOP_K", "5"))

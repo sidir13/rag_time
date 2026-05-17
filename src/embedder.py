@@ -1,80 +1,53 @@
-"""Adaptateur d'embedding OpenAI — remplace SentenceTransformer.
+"""Adaptateur d'embedding local — modèle SentenceTransformer léger.
 
-Offre la même interface que SentenceTransformer (encode, get_sentence_embedding_dimension)
-pour permettre une substitution transparente dans RAGEngine et Ingestor.
+Utilise paraphrase-multilingual-MiniLM-L12-v2 par défaut :
+  - Taille : ~118 MB  (téléchargé une seule fois, mis en cache)
+  - RAM    : ~150 MB au runtime
+  - Dims   : 384
+  - Langues : 50+ (EN, DE, FR, ES, ZH, JA, …)
+  - Pas de trust_remote_code, pas de einops
 
-Modèles supportés :
-  text-embedding-3-small  : 1536 dims, ~20× moins cher qu'ada-002
-  text-embedding-3-large  : 3072 dims, meilleure qualité
-  text-embedding-ada-002  : 1536 dims (legacy)
+Comparé à nomic-ai/nomic-embed-text-v1.5 (768 dims, ~550 MB avec PyTorch)
+ce modèle tient largement dans les 512 MB de Render Free.
 
-Clé API : variable d'env OPENAI_API_KEY
+Aucune clé API requise.
 """
 
-import os
 from typing import List
 
 import numpy as np
 
 
-class OpenAIEmbedder:
-    """Wrapper OpenAI Embeddings API compatible SentenceTransformer.
+class LocalEmbedder:
+    """Wrapper SentenceTransformer léger, interface compatible avec l'ancien code.
 
-    Gère le batching automatique pour respecter les limites de l'API OpenAI
-    (max 2048 inputs par requête pour text-embedding-3-small).
+    Expose encode() et get_sentence_embedding_dimension() pour être
+    interchangeable avec la précédente implémentation OpenAI.
     """
 
-    _DIMS = {
-        "text-embedding-3-small":  1536,
-        "text-embedding-3-large":  3072,
-        "text-embedding-ada-002":  1536,
-    }
+    def __init__(self, model: str = "paraphrase-multilingual-MiniLM-L12-v2") -> None:
+        from sentence_transformers import SentenceTransformer
 
-    def __init__(self, model: str = "text-embedding-3-small") -> None:
-        from openai import OpenAI
-
-        api_key = os.environ.get("OPENAI_API_KEY")
-        if not api_key:
-            raise EnvironmentError(
-                "OPENAI_API_KEY is not set. "
-                "Export it or add it to your .env file."
-            )
+        self._model = SentenceTransformer(model)
         self.model_name = model
-        self._client = OpenAI(api_key=api_key)
-        self._dim = self._DIMS.get(model, 1536)
 
     def get_sentence_embedding_dimension(self) -> int:
-        """Retourne la dimension des vecteurs produits."""
-        return self._dim
+        return self._model.get_sentence_embedding_dimension()
 
     def encode(
         self,
         texts: List[str],
-        normalize_embeddings: bool = True,  # no-op: OpenAI embeddings are already L2-norm
+        normalize_embeddings: bool = True,
         show_progress_bar: bool = False,
-        batch_size: int = 512,
+        batch_size: int = 256,
     ) -> np.ndarray:
-        """Encode une liste de textes via l'API OpenAI.
+        return self._model.encode(
+            texts,
+            normalize_embeddings=normalize_embeddings,
+            show_progress_bar=show_progress_bar,
+            batch_size=batch_size,
+        )
 
-        Args:
-            texts: liste de chaînes à encoder
-            normalize_embeddings: ignoré (OpenAI renvoie déjà des vecteurs normalisés)
-            show_progress_bar: ignoré (pas de barre locale pour les appels API)
-            batch_size: taille des batchs envoyés à l'API (≤ 2048)
 
-        Returns:
-            np.ndarray de shape (len(texts), dim), dtype float32
-        """
-        all_embeddings: List[List[float]] = []
-
-        for i in range(0, len(texts), batch_size):
-            batch = texts[i : i + batch_size]
-            response = self._client.embeddings.create(
-                input=batch,
-                model=self.model_name,
-            )
-            # L'API peut retourner les items dans n'importe quel ordre
-            sorted_data = sorted(response.data, key=lambda x: x.index)
-            all_embeddings.extend([item.embedding for item in sorted_data])
-
-        return np.array(all_embeddings, dtype=np.float32)
+# Alias rétro-compatible (anciens imports OpenAIEmbedder restent valides)
+OpenAIEmbedder = LocalEmbedder
