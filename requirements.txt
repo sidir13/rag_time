@@ -1,0 +1,27 @@
+# RAG-Time — Dépendances
+# Installation : pip install -r requirements.txt
+
+# LLM via OpenRouter (API compatible OpenAI)
+openai==1.82.0
+
+# Vector store (recherche vectorielle exacte, pre-built wheels)
+faiss-cpu==1.13.2
+
+# Embeddings — nomic-ai/nomic-embed-text-v1.5 (768 dims, trust_remote_code)
+sentence-transformers==3.3.1
+einops  # requis par nomic-embed-text-v1.5
+
+# Progress bars (ingestion + évaluation)
+tqdm
+
+# Frontend
+streamlit==1.41.1
+
+# Data
+pandas==2.2.3
+
+# Lecture PDF
+pypdf==5.1.0
+
+# Variables d'environnement
+python-dotenv==1.0.1

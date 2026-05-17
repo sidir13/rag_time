@@ -1,0 +1,11 @@
+ticket_id,question,hit,rank,reciprocal_rank,mean_similarity,top1_similarity,faithfulness,answer_relevance,context_precision,context_recall,hallucination_score,completeness,rag_score
+ml_012502,What previous tickets have reported issues with project management tools becoming unresponsive after software updates?,True,1,1.0,0.7631296515464783,0.7992115020751953,0.75,0.5,0.6,0.75,0.25,0.5,0.6416666666666667
+ml_008779,What previous incidents have been reported involving unapproved access attempts on medical records?,True,2,0.5,0.7936359405517578,0.8218784332275391,1.0,0.75,1.0,0.5,0.25,0.75,0.7916666666666666
+ml_003202,What are the best digital marketing strategies for brand growth?,False,0,0.0,0.8342702865600586,0.8384630084037781,0.75,1.0,0.8,0.75,0.25,0.75,0.7999999999999999
+ml_016852,What are common integration issues with Monday.com tools reported by users?,True,1,1.0,0.7904343843460083,0.8556029796600342,0.75,1.0,0.4,1.0,0.25,0.75,0.775
+ml_020751,What are the common issues users face with inaccurate forecasts in the investment analysis tool due to outdated algorithms?,True,1,1.0,0.8451364994049072,0.8974472880363464,1.0,1.0,1.0,1.0,0.25,0.75,0.9166666666666666
+ml_009548,What digital strategies does your agency use to enhance brand growth and online presence?,True,1,1.0,0.8402335405349731,0.84794682264328,1.0,1.0,0.8,1.0,0.0,1.0,0.9666666666666667
+ml_001101,What past tickets have addressed compatibility issues between Salesforce CRM and Excel 2021 following software updates?,True,1,1.0,0.7027289271354675,0.7243505716323853,1.0,1.0,0.4,1.0,0.25,0.75,0.8166666666666668
+ml_019830,What previous incidents have been reported regarding unauthorized access to hospital IT systems due to outdated security protocols?,False,0,0.0,0.8335466146469116,0.8559954166412354,1.0,1.0,1.0,1.0,0.25,0.75,0.9166666666666666
+ml_014357,What previous tickets have addressed requests for updates to the employee onboarding process or the inclusion of training modules in project management software?,True,1,1.0,0.7366192817687989,0.8233630657196045,0.75,1.0,0.4,1.0,0.0,0.75,0.8166666666666668
+ml_028309,What data analytics solutions do we offer for investment optimization in financial firms?,True,1,1.0,0.853257954120636,0.8756446242332458,0.75,1.0,1.0,1.0,0.25,0.75,0.875
