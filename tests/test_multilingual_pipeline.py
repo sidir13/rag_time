@@ -28,7 +28,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 import pandas as pd
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 OPENROUTER_API_KEY = os.environ.get("OPENROUTER_API_KEY", "")
