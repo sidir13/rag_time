@@ -7,9 +7,9 @@ openai==1.82.0
 # Vector store (recherche vectorielle exacte, pre-built wheels)
 faiss-cpu==1.13.2
 
-# Embeddings — paraphrase-multilingual-MiniLM-L12-v2 (~118 MB, 384 dims, 50+ langues)
-# Beaucoup plus léger que nomic-embed (~550 MB) — tient dans 512 MB Render Free
-sentence-transformers==3.3.1
+# Embeddings via HuggingFace Inference API (serverless, zero RAM local)
+# appels HTTP avec HF_API_KEY -- aucun modele charge localement
+huggingface-hub>=0.23.0
 
 # Progress bars (ingestion + évaluation)
 tqdm

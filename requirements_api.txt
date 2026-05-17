@@ -12,8 +12,8 @@ openai>=1.0.0
 # Vectorstore
 faiss-cpu>=1.8.0
 
-# Embeddings — modèle local léger (~118 MB, 384 dims, multilingue)
-sentence-transformers>=3.0.0
+# Embeddings via HuggingFace Inference API (zero RAM local)
+huggingface-hub>=0.23.0
 
 # Core scientific
 numpy>=1.26.0

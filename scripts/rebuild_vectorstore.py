@@ -86,7 +86,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Rebuild FAISS vectorstore with OpenAI embeddings")
     parser.add_argument("--src",   default=default_vs, help="Source vectorstore directory")
     parser.add_argument("--dst",   default=default_vs, help="Destination directory (default: overwrite src)")
-    parser.add_argument("--model", default="paraphrase-multilingual-MiniLM-L12-v2", help="SentenceTransformer model")
+    parser.add_argument("--model", default="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2", help="HF model ID")
     parser.add_argument("--batch-size", type=int, default=512, help="API batch size (≤ 2048)")
     args = parser.parse_args()
 
